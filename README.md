@@ -10,6 +10,14 @@ Agent workflows and developer tools, grounded in backend engineering, QA and app
 
 The portfolio covers Agent Loadout, Pointsman (Jev + dependency DAG routing), audio detection, financial disclosure review, wind forecasting, microstructure prediction, IBK Securities, SoyNet and vessel matching. A separate expandable workbench holds prototypes, local changes, coursework and research at their recorded stages. Experience and Background cover Timepercent, education, UNCG research, military service and community leadership.
 
+The Timeline tab adds a dated, resume-style view of thirteen work and activity entries, plus education. Record dates and competition periods are labeled separately from employment and confirmed project periods. Notes includes reflections on responsibility, leadership, followership and learning with AI.
+
+- [Timeline in Korean](https://kai-leee.github.io/engineering-portfolio/?lang=ko&section=timeline)
+- [Timeline in English](https://kai-leee.github.io/engineering-portfolio/?lang=en&section=timeline)
+- [FDE brief](https://kai-leee.github.io/engineering-portfolio/fde-brief.html) · [Application portfolio PDF](https://kai-leee.github.io/engineering-portfolio/Kai-Lee-FDE-Portfolio.pdf)
+
+The FDE brief brings the source repositories, portfolio links, selected experience and chronology together. Personal cover-letter drafts and the side-by-side application review are kept outside this public repository.
+
 Use the color-only Amber, Ocean and Paper buttons and the direct English / 한국어 buttons at the top right. Language is encoded in the URL; theme resets when the page is reopened. Contact links open GitHub, Gmail, telephone and LinkedIn directly.
 
 ## Build and host

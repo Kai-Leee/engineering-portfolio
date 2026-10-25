@@ -164,6 +164,21 @@ const explorations: { name: string; summary: CopyKey; url?: string }[] = [
   { name: 'editor-lab / Base MVP', summary: 'Debugger integration checks and editor-routing architecture notes. This remains environment and design work.' },
   { name: 'FDE Learning Lab', summary: 'A mock integration exercise for state, cancellation, retries and confirmation. ASR, LLM and TTS are simulated; hands-on learning is still in progress.' }
 ];
+const timeline: { date: CopyKey; kind: CopyKey; title: CopyKey; summary: CopyKey; projectIds?: Project['id'][] }[] = [
+  { date: 'Oct 2026 · ongoing work', kind: 'Independent projects', title: 'Pointsman & Agent Loadout', summary: 'Jev + DAG task routing and shared agent-tool configuration. I set direction and review the work; coding agents help implement and test it.', projectIds: ['pointsman', 'loadout'] },
+  { date: 'Oct 2026 · experiment records', kind: 'Applied ML experiments', title: 'Microstructure & vessel matching', summary: 'Image restoration and structural features; multilingual candidate retrieval and reranking. These dates identify the research records, not a confirmed project start.', projectIds: ['microstructure', 'vessel'] },
+  { date: 'Aug–Sep 2026 · competition period', kind: 'Competition', title: 'Generated Audio Detection', summary: 'Speech/music data curation, model representations, cropping and file-level aggregation. Offline detection experiments.', projectIds: ['voice'] },
+  { date: 'Aug 2026 · start recorded', kind: 'Team project', title: 'Financial Disclosure Agent', summary: 'Data extraction, retrieval and tool-calling work. Development was confirmed complete by September; the exact end date is not recorded. This site shares personal design and review notes.', projectIds: ['disclosure'] },
+  { date: 'Jul–Aug 2026', kind: 'Competition', title: 'BARAM Wind Power', summary: 'Forecasting and experiment-management work, including hypothesis tracking, evaluation boundaries and learning from a persistent bottleneck.', projectIds: ['wind'] },
+  { date: 'Jan–May 2026', kind: 'Exchange & research', title: 'UNCG · Lab Intern', summary: 'Approximately 3.5 months of fMRI graph-learning research within the exchange visit, including GAT-based DAGNN and Signed DAGNN exploration.' },
+  { date: 'Jun 2024–Dec 2025', kind: 'Military service', title: 'Republic of Korea Army', summary: 'Satellite communications operator, sergeant and squad leader. Built an internal temperature-reporting system during service.' },
+  { date: 'Aug 2023–May 2024', kind: 'Full-time', title: 'Timepercent · Backend & QA', summary: 'Stateful processing, shared business rules, trade-result monitoring, storage/query APIs and regression checks.' },
+  { date: 'Mar–Jul 2023', kind: 'Internship', title: 'Timepercent · Backend & QA Intern', summary: 'Backtesting validation, a checking CLI, API documentation and router tests while learning the service and its expected behavior.' },
+  { date: 'Jan–Dec 2023', kind: 'Community leadership', title: 'Uni-D · President', summary: 'Worked with representatives from participating universities on hackathon and datathon planning and operations.' },
+  { date: 'Apr–Dec 2022', kind: 'Industry–academic project', title: 'IBK Securities · Team Lead', summary: 'Led a five-person project team; handled financial data, autoencoder-based dimensionality reduction, portfolio optimization and backend deployment.', projectIds: ['ibk'] },
+  { date: 'Nov 2021–Nov 2022', kind: 'Student leadership', title: 'SKKU · Student Council President', summary: 'Rebuilt handover information for the return of offline events and used member and participant feedback to improve schedules and role allocation.' },
+  { date: 'Apr 2021–Feb 2022', kind: 'Industry–academic project', title: 'SoyNet · C++ Model Parser', summary: 'Developed ONNX-to-SoyNet configuration mapping and the Mask R-CNN configuration-generation path, with layer-level comparisons.', projectIds: ['soynet'] }
+];
 const tabs: {
   id: Tab;
   label: CopyKey;
@@ -175,7 +190,7 @@ const tabs: {
   label: 'Work'
 }, {
   id: 'experience',
-  label: 'Experience'
+  label: 'Timeline'
 }, {
   id: 'background',
   label: 'Background'
@@ -245,7 +260,11 @@ function ProjectArt({
   </div>;
 }
 export const KaiLeeVCardEngineeringPortfolio = () => {
-  const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    if (typeof window === 'undefined') return 'overview';
+    const section = new URLSearchParams(window.location.search).get('section');
+    return section === 'timeline' ? 'experience' : tabs.find(tab => tab.id === section)?.id || 'overview';
+  });
   const [theme, setTheme] = useState<Theme>('amber');
   const [language, setLanguage] = useState<'en' | 'ko'>(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('lang') === 'ko' ? 'ko' : 'en');
   const [filter, setFilter] = useState('All');
@@ -263,8 +282,10 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
     document.documentElement.lang = language;
     const url = new URL(window.location.href);
     url.searchParams.set('lang', language);
+    if (activeTab === 'overview') url.searchParams.delete('section');
+    else url.searchParams.set('section', activeTab === 'experience' ? 'timeline' : activeTab);
     window.history.replaceState(window.history.state, '', url);
-  }, [language]);
+  }, [language, activeTab]);
   useEffect(() => {
     if (selected && !dialog.current?.open) dialog.current?.showModal();
   }, [selectedId]);
@@ -320,7 +341,7 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
               }}>{t("Explore my work")} <Icon /></button><External href="https://github.com/Kai-Leee" className="kp-text-link">{t("View GitHub")}</External><button type="button" className="kp-text-link" onClick={() => {
                 setActiveTab('notes');
                 tabRefs.current[4]?.focus();
-              }}>{t('Read my latest reflection')} <Icon /></button></div></div>
+              }}>{t('Read my latest reflection')} <Icon /></button></div><div className="kp-brief-callout"><div><strong>{t('For FDE opportunities')}</strong><p>{t('My work, chronology and source links in one concise brief.')}</p></div><External href={`https://kai-leee.github.io/engineering-portfolio/fde-brief.html?lang=${language}`} className="kp-primary">{t('Open FDE brief')}</External></div></div>
           <div className="kp-about-grid"><section><h3>{t('What I bring')}</h3><p>{t('I ask questions until I understand the structure, turn assumptions into checks, and learn from the gap between expected and actual behavior.')}</p></section><section><h3>{t('What I am building')}</h3><p>{t('Agent workflows and developer tools that connect ideas, tasks, execution environments and human review.')}</p></section><section><h3>{t('What I care about')}</h3><p>{t('Useful tools that more people can try and shape together. I welcome conversations, feedback and opportunities to build with others.')}</p><a href="mailto:dlrlxor548@gmail.com" className="kp-text-link">{t('Say hello')} <Icon /></a></section></div>
           <div className="kp-at-a-glance" role="group" aria-label={t('Career at a glance')}>
             <button type="button" onClick={() => {
@@ -341,7 +362,7 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
               tabRefs.current[1]?.focus();
             }}>{t("All projects")} <Icon /></button></div>
           <div className="kp-selected-grid">{projects.slice(0, 2).map(project => projectCard(project, true))}</div>
-          <div className="kp-working-note"><span className="kp-note-symbol" aria-hidden="true">↳</span><div><h3>{t("AI is part of the workflow.")}<br />{t("Judgment is my responsibility.")}</h3><p>{t("I make the question explicit, compare the results and decide what to accept. Failed experiments and unresolved limits stay in the record.")}</p></div></div>
+          <div className="kp-working-note"><div><h3>{t('Own my part.')}<br />{t('Help the team finish together.')}</h3><p>{t('I find purpose in taking responsibility for a shared goal and bringing it into reality. I work with agents to build, while staying accountable for the questions, the checks and what I accept.')}</p><button type="button" className="kp-text-link" onClick={() => { setActiveTab('notes'); tabRefs.current[4]?.focus(); }}>{t('Read about responsibility & leadership')} <Icon /></button></div></div>
         </section>
 
         <section className="kp-panel" role="tabpanel" id="kp-panel-work" aria-labelledby="kp-tab-work" hidden={activeTab !== 'work'} tabIndex={0}>
@@ -352,7 +373,11 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
         </section>
 
         <section className="kp-panel" role="tabpanel" id="kp-panel-experience" aria-labelledby="kp-tab-experience" hidden={activeTab !== 'experience'} tabIndex={0}>
-          <span className="kp-eyebrow">{t("PROFESSIONAL & INDEPENDENT WORK")}</span><h2 className="kp-page-title">{t("Experience")}<span className="kp-dot">.</span></h2><p className="kp-page-intro">{t("A background in service behavior, stateful systems and testing, extended through agent and machine-learning projects.")}</p>
+          <span className="kp-eyebrow">{t('MY WORK OVER TIME')}</span><h2 className="kp-page-title">{t('Timeline')}<span className="kp-dot">.</span></h2><p className="kp-page-intro">{t('A chronological view of employment, projects, research, service and leadership. Overlapping activities keep their own dates and roles.')}</p>
+          <div className="kp-timeline-education"><span>{t('Education')}</span><strong>{t('Sungkyunkwan University')}</strong><p>{t('Software · Mar 2020–expected Feb 2027')}</p></div>
+          <ol className="kp-timeline">{timeline.map(entry => <li key={entry.title}><div className="kp-timeline-date">{t(entry.date)}<span>{t(entry.kind)}</span></div><article><h3>{t(entry.title)}</h3><p>{t(entry.summary)}</p>{entry.projectIds && <div className="kp-timeline-links">{entry.projectIds.map(id => <button key={id} type="button" className="kp-text-link" onClick={() => setSelectedId(id)}>{projects.find(project => project.id === id)!.name} <Icon /></button>)}</div>}</article></li>)}</ol>
+          <p className="kp-scope-note">{t('Dates marked as records or competition periods do not establish a personal project start or full participation period.')}</p>
+          <div className="kp-section-title"><h3>{t('Experience in detail')}<span className="kp-dot">.</span></h3></div>
           <div className="kp-experience"><div className="kp-experience-mark"><Icon kind="code" size={22} /></div><article><p className="kp-eyebrow">{t("PROFESSIONAL EXPERIENCE")}</p><h3>{t("Backend Engineering & QA")}</h3><p className="kp-company">Timepercent</p><p className="kp-dates">{t("Intern · Mar–Jul 2023")}<br />{t("Full-time · Aug 2023–May 2024")}</p><p>{t("I worked on service verification and backend flows that preserve state across processing segments, with results that can be recorded, compared and inspected.")}</p><ul><li>{t("Separated processing boundaries from the lifetime of business state.")}</li><li>{t("Worked on monitoring-result storage, retrieval and error records.")}</li><li>{t("Asked colleagues about expected behavior and used the differences I found to guide verification and fixes.")}</li></ul><div className="kp-tags"><span>Python</span><span>{t("State transitions")}</span><span>QA</span><span>{t("Monitoring")}</span></div><p className="kp-scope-note">{t("Public summary of my responsibilities. Company code, data and internal policies are not included.")}</p></article></div>
           <div className="kp-experience"><div className="kp-experience-mark"><Icon kind="layers" size={22} /></div><article><p className="kp-eyebrow">{t("INDEPENDENT PROJECTS")}</p><h3>{t("AI-assisted Engineering & Applied ML")}</h3><p>{t("I work from an idea to a testable question, then use agents to help research, implement and compare possible answers.")}</p><ul><li>{t("Define execution scope and the artifacts a task should produce.")}</li><li>{t("Inspect data preparation, labels and evaluation conditions before interpreting a score.")}</li><li>{t("Keep human review at the point where a proposed result becomes an accepted conclusion.")}</li></ul><External href="https://github.com/Kai-Leee/competition-portfolio/blob/main/workflow/agent-native-development.md" className="kp-source-link">{t("Read my workflow")}</External></article></div>
         </section>
@@ -369,6 +394,18 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
 
         <section className="kp-panel" role="tabpanel" id="kp-panel-notes" aria-labelledby="kp-tab-notes" hidden={activeTab !== 'notes'} tabIndex={0}>
           <span className="kp-eyebrow">{t("LESSONS FROM THE WORK")}</span><h2 className="kp-page-title">{t("Notes")}<span className="kp-dot">.</span></h2><p className="kp-page-intro">{t("What I changed my mind about, what failed and what I would check earlier next time.")}</p>
+          <article className="kp-reflection" aria-labelledby="kp-responsibility-title">
+            <div className="kp-reflection-meta"><span className="kp-eyebrow">{t('RESPONSIBILITY & LEADERSHIP')}</span><time dateTime="2026-10-25">{t('25 October 2026')}</time></div>
+            <h3 id="kp-responsibility-title">{t('Own my part. Help the team finish together.')}</h3>
+            <p className="kp-reflection-intro">{t('Whatever my title, I want to take responsibility for my work and help the team reach a better result. Seeing a shared goal become real is a source of joy for me.')}</p>
+            <div className="kp-reflection-grid">
+              <section><h4>{t('Responsibility gives the work meaning.')}</h4><p>{t('When I accept responsibility, I want to see it through. Difficult stretches can be tiring, but making the result we imagined is rewarding. I want to bring that commitment to the teams I join.')}</p></section>
+              <section><h4>{t('Followership starts with ownership.')}</h4><p>{t('I see good followers as leaders within their own roles. They take initiative in their area and work to understand the decisions and constraints of the people around them.')}</p></section>
+              <section><h4>{t('Leadership includes the other person’s view.')}</h4><p>{t('Student council, the IBK project and Uni-D shaped my view of leadership. A leader needs to understand how others can contribute and share responsibility for the team’s result.')}</p></section>
+              <section><h4>{t('The work I want to own as an FDE.')}</h4><p>{t('I want to understand a team’s work and policies, agree on success with the people involved, and connect systems until the intended workflow works in practice. I also want what we learn to make the next deployment better.')}</p></section>
+            </div>
+            <p className="kp-reflection-source">{t('Adapted from my additional reflection on 25 October 2026. This describes my values and the work I want to do.')}</p>
+          </article>
           <article className="kp-reflection" aria-labelledby="kp-reflection-title">
             <div className="kp-reflection-meta"><span className="kp-eyebrow">{t('PERSONAL REFLECTION')}</span><time dateTime="2026-10-25">{t('25 October 2026')}</time></div>
             <h3 id="kp-reflection-title">{t('From trying AI tools to making them work together.')}</h3>
