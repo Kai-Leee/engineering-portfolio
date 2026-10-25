@@ -198,6 +198,16 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
   }
   return <div className="kai-portfolio" data-theme={theme} lang={language}>
     <a className="kp-skip" href="#kp-main">{t('Skip to content')}</a>
+    <div className="kp-topbar">
+      <label className="kp-preference"><span>{t('COLOR THEME')}</span><select value={theme} onChange={event => setTheme(event.target.value as Theme)}>{([{
+        id: 'amber', label: 'Amber', mode: 'Dark'
+      }, {
+        id: 'ocean', label: 'Ocean', mode: 'Dark'
+      }, {
+        id: 'paper', label: 'Paper', mode: 'Light'
+      }] as const).map(preset => <option key={preset.id} value={preset.id}>{preset.label} · {t(preset.mode)}</option>)}</select></label>
+      <label className="kp-preference"><span>Language / 언어</span><select value={language} onChange={event => setLanguage(event.target.value as 'en' | 'ko')}><option value="en" lang="en">English</option><option value="ko" lang="ko">한국어</option></select></label>
+    </div>
     <div className="kp-layout">
       <aside className="kp-sidebar" aria-label={t('Profile')}>
         <div className="kp-identity"><div className="kp-avatar" aria-hidden="true"><span>K</span><i /><b>LEE</b></div><div><h1>Kai Lee</h1><p className="kp-role">{t('Backend & AI Systems')}</p></div></div>
@@ -205,20 +215,6 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
         <div className="kp-sidebar-rule" />
         <div className="kp-profile-lines"><div><span className="kp-icon-box"><Icon kind="code" /></span><p><small>{t('ENGINEERING')}</small>{t('Backend systems & QA')}</p></div><div><span className="kp-icon-box"><Icon kind="layers" /></span><p><small>{t('EXPLORATION')}</small>{t('Agents & applied ML')}</p></div><div><span className="kp-icon-box"><Icon kind="check" /></span><p><small>{t('WORKING STYLE')}</small>{t('AI-assisted. Human-reviewed.')}</p></div></div>
         <div className="kp-sidebar-links"><External href="https://github.com/Kai-Leee"><Icon kind="github" /> GitHub</External><External href="https://github.com/Kai-Leee/competition-portfolio">{t('Case studies')}</External></div>
-        <div className="kp-language-picker" role="group" aria-label="Language / 언어"><button type="button" lang="en" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>English</button><button type="button" lang="ko" aria-pressed={language === 'ko'} onClick={() => setLanguage('ko')}>한국어</button></div>
-        <fieldset className="kp-theme-picker"><legend>{t('COLOR THEME')}</legend><div>{([{
-              id: 'amber',
-              label: 'Amber',
-              mode: 'Dark'
-            }, {
-              id: 'ocean',
-              label: 'Ocean',
-              mode: 'Dark'
-            }, {
-              id: 'paper',
-              label: 'Paper',
-              mode: 'Light'
-            }] as const).map(preset => <button type="button" key={preset.id} aria-pressed={theme === preset.id} aria-label={language === 'ko' ? `${preset.label}, ${t(preset.mode)} 테마` : `${preset.label}, ${preset.mode} theme`} onClick={() => setTheme(preset.id)}><span className={`kp-theme-swatch kp-swatch-${preset.id}`} aria-hidden="true" /><span>{preset.label}<small>{t(preset.mode)}</small></span></button>)}</div></fieldset>
         <p className="kp-sidebar-caption">{t('IDEAS → EXPERIMENTS → EVIDENCE')}</p>
       </aside>
 
