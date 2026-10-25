@@ -199,14 +199,14 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
   return <div className="kai-portfolio" data-theme={theme} lang={language}>
     <a className="kp-skip" href="#kp-main">{t('Skip to content')}</a>
     <div className="kp-topbar">
-      <label className="kp-preference"><span>{t('COLOR THEME')}</span><select value={theme} onChange={event => setTheme(event.target.value as Theme)}>{([{
+      <div className="kp-color-buttons" role="group" aria-label={t('COLOR THEME')}>{([{
         id: 'amber', label: 'Amber', mode: 'Dark'
       }, {
         id: 'ocean', label: 'Ocean', mode: 'Dark'
       }, {
         id: 'paper', label: 'Paper', mode: 'Light'
-      }] as const).map(preset => <option key={preset.id} value={preset.id}>{preset.label} · {t(preset.mode)}</option>)}</select></label>
-      <label className="kp-preference"><span>Language / 언어</span><select value={language} onChange={event => setLanguage(event.target.value as 'en' | 'ko')}><option value="en" lang="en">English</option><option value="ko" lang="ko">한국어</option></select></label>
+      }] as const).map(preset => <button type="button" className="kp-color-button" key={preset.id} aria-pressed={theme === preset.id} aria-label={language === 'ko' ? `${preset.label}, ${t(preset.mode)} 테마` : `${preset.label}, ${preset.mode} theme`} title={language === 'ko' ? `${preset.label}, ${t(preset.mode)} 테마` : `${preset.label}, ${preset.mode} theme`} onClick={() => setTheme(preset.id)}><span className={`kp-color-dot kp-swatch-${preset.id}`} aria-hidden="true" /></button>)}</div>
+      <div className="kp-language-toggle" role="group" aria-label="Language / 언어"><button type="button" lang="en" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>English</button><button type="button" lang="ko" aria-pressed={language === 'ko'} onClick={() => setLanguage('ko')}>한국어</button></div>
     </div>
     <div className="kp-layout">
       <aside className="kp-sidebar" aria-label={t('Profile')}>
