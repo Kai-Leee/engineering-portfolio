@@ -6,7 +6,7 @@ type Theme = 'amber' | 'ocean' | 'paper';
 type Project = {
   id: keyof typeof koProjects;
   name: string;
-  category: 'Agents' | 'Applied ML';
+  category: 'Agents' | 'Applied ML' | 'Software';
   label: string;
   title: string;
   summary: string;
@@ -19,17 +19,31 @@ type Project = {
   linkLabel: string;
 };
 const englishProjects: Project[] = [{
+  id: 'loadout',
+  name: 'Agent Loadout',
+  category: 'Agents',
+  label: 'Developer tooling · in progress',
+  title: 'Making agent tools easier to bring to work.',
+  summary: 'A shared home for Claude Code and Codex plugins, skills, hooks and MCP settings, with a staged move from Python and bash to Go.',
+  tags: ['Developer tools', 'Go migration', 'Configuration'],
+  problem: 'Useful agent tools still take work to discover, configure and keep consistent across environments. The management commands also had startup overhead.',
+  decision: 'I chose a staged Go migration for speed and functionality, with existing OS tools used where appropriate and Windows treated as a separate target. Agents implemented and tested the changes.',
+  result: 'The recorded first-stage benchmark for sync --check moved from a 1,904 ms median to 268 ms, with 8 runs per version in an isolated setup. This check path still called Python; it was not a complete migration or a cross-platform runtime result.',
+  role: 'I set the migration direction and scope, then asked coding agents to implement and test the changes.',
+  url: '',
+  linkLabel: ''
+}, {
   id: 'pointsman',
   name: 'Pointsman',
   category: 'Agents',
   label: 'Public project · ongoing research',
-  title: 'Giving agent work a clearer contract.',
-  summary: 'Task routing for coding agents, with explicit scopes, artifact contracts and recorded checks.',
-  tags: ['Agent workflows', 'Task routing', 'Verification'],
+  title: 'Routing agent work with Jev and dependency DAGs.',
+  summary: 'Jev turns a goal into tasks and dependencies; a DAG routes ready work to scoped coding agents and connects their outputs to checks.',
+  tags: ['Jev', 'Dependency DAG', 'Task routing'],
   problem: 'A useful goal still leaves questions about task boundaries, dependencies and what counts as finished.',
-  decision: 'Make the decisions inspectable: define the work, scope each worker and connect checks to the artifacts they evaluate.',
+  decision: 'Use Jev for decomposition and dependency planning, represent the work as a directed acyclic graph, and dispatch ready tasks through a queue. Give workers an explicit scope, then check and repair their outputs.',
   result: 'The public project and research records describe the workflow and its measured comparisons. Those comparisons apply to their recorded tasks and evaluation conditions.',
-  role: 'I set the direction, questioned the workflow and reviewed results. Coding agents helped implement and test the ideas.',
+  role: 'I set the direction, asked questions about how the workflow should operate, and reviewed results. Coding agents helped implement and test the ideas.',
   url: 'https://github.com/Kai-Leee/pointsman',
   linkLabel: 'View repository'
 }, {
@@ -43,7 +57,7 @@ const englishProjects: Project[] = [{
   problem: 'An audio file can mix speech, music and generated segments. A promising model does not settle how to prepare, crop or aggregate that input.',
   decision: 'Compare stem-aware features, model representations and aggregation on matched inputs, and keep the question, configuration and result tied together.',
   result: 'One matched file-level panel improved while a music diagnostic worsened. I kept those findings separate rather than treating an internal result as a verified competition gain.',
-  role: 'I directed data preparation and experimental choices, used coding agents for implementation, and reviewed the evidence behind score claims.',
+  role: 'I directed data preparation and experimental choices, worked with coding agents on implementation, and reviewed the evidence behind score claims.',
   url: 'https://github.com/Kai-Leee/competition-portfolio/blob/main/competitions/deepvoice/README.md',
   linkLabel: 'Read case study'
 }, {
@@ -57,7 +71,7 @@ const englishProjects: Project[] = [{
   problem: 'A well-formed response can still attach the wrong meaning to its evidence. Structure alone is an incomplete check.',
   decision: 'Treat source checking and semantic review as explicit steps. An agent review does not replace a person accepting the result.',
   result: 'The published case focuses on my design ideas and review lessons. It does not publish the team implementation or internal performance.',
-  role: 'This public account covers my personal design and review scope, with the team’s implementation kept outside the published material.',
+  role: 'My contribution covered design ideas and review, with a focus on whether the evidence supported the answer.',
   url: 'https://github.com/Kai-Leee/competition-portfolio/blob/main/competitions/disclosure-agent/README.md',
   linkLabel: 'Read review notes'
 }, {
@@ -74,7 +88,82 @@ const englishProjects: Project[] = [{
   role: 'I made experiment choices, reviewed agent work and sought external perspectives when my own approach stopped progressing.',
   url: 'https://github.com/Kai-Leee/competition-portfolio/blob/main/competitions/wind-power/README.md',
   linkLabel: 'Read retrospective'
+}, {
+  id: 'microstructure',
+  name: 'Microstructure Hardness Prediction',
+  category: 'Applied ML',
+  label: 'Competition experiments',
+  title: 'Learning what an image representation leaves out.',
+  summary: 'Image models, manual masks and grain, pore and boundary features for hardness prediction from synthetic microstructure images.',
+  tags: ['Image ML', 'Feature engineering', 'Error analysis'],
+  problem: 'A grayscale image mixed noise, pores, grains and boundaries, while the target was a single hardness value. General image features did not give the result I expected.',
+  decision: 'I spent time marking and masking images, then compared restored images, explicit structural features, tree models and CNNs. I also examined sensitivity to brightness.',
+  result: 'Some early masking work helped in my experiments, but the later development OOF comparison did not support a benefit from the added features over the existing CNN. This was a development comparison, not an independent or official score.',
+  role: 'I chose the image-analysis direction, worked on manual labels and masks, and reviewed agent-assisted experiments. Better separation of pores, grains and boundaries remains an open question.',
+  url: 'https://github.com/Kai-Leee/competition-portfolio',
+  linkLabel: 'View experiment archive'
+}, {
+  id: 'ibk',
+  name: 'IBK Securities · Portfolio Optimization',
+  category: 'Applied ML',
+  label: 'Industry–academic project · Apr–Dec 2022',
+  title: 'Connecting financial data to a usable service.',
+  summary: 'Market prediction and portfolio optimization, with data collection, autoencoder-based dimensionality reduction and a deployed backend.',
+  tags: ['Autoencoder', 'Django', 'MongoDB', 'Docker'],
+  problem: 'A user-requested portfolio needed a path from financial data and analysis to an accessible service.',
+  decision: 'I collected data, used an autoencoder to reduce its dimensions, and worked on portfolio optimization based on user requests. I connected Django APIs to MongoDB and prepared the Docker environment and server deployment.',
+  result: 'The team delivered the service and final presentation. I contributed data processing, portfolio optimization and backend deployment.',
+  role: 'As leader of a five-person industry–academic team working with IBK Securities, I coordinated the schedule and shared domain knowledge while handling data and backend work.',
+  url: 'https://github.com/ibk-project/ibk-analytical-trading',
+  linkLabel: 'View team repository'
+}, {
+  id: 'soynet',
+  name: 'SoyNet · Model Conversion Parser',
+  category: 'Software',
+  label: 'Industry–academic project · Apr 2021–Feb 2022',
+  title: 'Bridging model graphs and an inference engine.',
+  summary: 'A C++ parser that maps ONNX graphs to SoyNet configuration and connects the PyTorch Mask R-CNN configuration path.',
+  tags: ['C++', 'ONNX', 'Model integration'],
+  problem: 'Model nodes and attributes needed to become parameters the inference engine could consume, without hiding conversion mistakes.',
+  decision: 'I separated mapping rules into text tables and compared the converted configuration layer by layer. I connected postprocessing and input/output settings for the PyTorch Mask R-CNN path.',
+  result: 'The work produced a configuration-generation path and corrected conversion errors through layer-level comparisons.',
+  role: 'I developed the C++ conversion parser and mapping rules as part of the industry–academic project. This work predates my current agent-assisted workflow.',
+  url: '',
+  linkLabel: ''
+}, {
+  id: 'vessel',
+  name: 'Multilingual Vessel Matching',
+  category: 'Applied ML',
+  label: 'Competition experiments',
+  title: 'Separating missing candidates from wrong choices.',
+  summary: 'Candidate search and BGE/LoRA reranking for multilingual vessel names, explored through parallel agent experiments.',
+  tags: ['Entity matching', 'Reranking', 'Parallel experiments'],
+  problem: 'A wrong match could come from the right vessel never entering the candidate pool, or from the model choosing the wrong candidate. Those failures needed different fixes.',
+  decision: 'Compare search channels and rerankers on a shared candidate pool, keep missing-candidate errors separate, and review what information each method actually receives.',
+  result: 'The development comparison showed a small difference between string-based search and BGE reranking. The development set was reused and the reranker received more information, so this did not isolate a model-only gain or establish an independent result.',
+  role: 'I proposed ideas, designed comparisons and configured agents, skills and queues for parallel work. Coding agents implemented the candidates; I reviewed the comparisons and chose follow-up questions.',
+  url: 'https://github.com/Kai-Leee/competition-portfolio',
+  linkLabel: 'View experiment archive'
 }];
+const explorations: { name: string; summary: CopyKey; url?: string }[] = [
+  { name: 'Personal OS', summary: 'A Markdown-first personal workspace with web and macOS views, backups and conflict checks. Native integration is still partial.' },
+  { name: 'agent-workspace', summary: 'A LangGraph runner with checkpoints, review and human approval. Some provider integrations are exercised; the click-through demo remains separate from the runner.' },
+  { name: 'Jcode / Desktop', summary: 'Local Rust changes around keyboard input, session forks, handoffs and project-path recovery. These are local modifications, without an upstream merge.' },
+  { name: 'Jev PAPER / Roboadvisor', summary: 'Trading-service and Rust backtesting research in paper mode. The work has not established a stable profitability advantage.' },
+  { name: 'Research Workbench', summary: 'A Python CLI and offline dashboard for CSV exploration and experiment records. Validation uses synthetic fixtures.' },
+  { name: 'PPS Compliance Monitoring', summary: 'Rule and evidence-retrieval experiments with a mock submission flow. Model-level performance remains unmeasured.' },
+  { name: 'SCPC', summary: 'Policy and event compilation, validation traces and submission records. Results belong to their specific recorded versions.' },
+  { name: 'ETRI Sensor ML', summary: 'Sensor aggregation, tree-model experiments, OOF validation, calibration and fusion. Some historical artifacts remain incomplete.' },
+  { name: 'UNCG Web Coursework', summary: 'A team web project using React, Express and PostgreSQL. This coursework is separate from my UNCG research internship.', url: 'https://github.com/Kai-Leee/CSC372_Final_Project' },
+  { name: 'Payment Ledger', summary: 'A local ledger prototype separating transactions from interpretation, with refund, cancellation and transfer handling on synthetic data.' },
+  { name: 'Todomate Static Analysis', summary: 'An artifact-inspection notebook covering binary resources and reference checks. It does not reconstruct the complete application source.' },
+  { name: 'Skills / MCP Tooling', summary: 'Experiments connecting custom skills, search and reverse-engineering tools. Connection checks and individual tool validation are tracked separately.' },
+  { name: 'DRAM Learning Site', summary: 'A learning interface and public-data loader scaffold. The planned analysis stages are still unfinished.' },
+  { name: 'Growing Neural Graph', summary: 'Literature and design notes on integer, event-driven and growing neural graphs. No trained model or measured result yet.' },
+  { name: 'Pleos Challenge', summary: 'Platform, SDK and competition-rule research. Preparation has not yet become an implemented application.' },
+  { name: 'editor-lab / Base MVP', summary: 'Debugger integration checks and editor-routing architecture notes. This remains environment and design work.' },
+  { name: 'FDE Learning Lab', summary: 'A mock integration exercise for state, cancellation, retries and confirmation. ASR, LLM and TTS are simulated; hands-on learning is still in progress.' }
+];
 const tabs: {
   id: Tab;
   label: CopyKey;
@@ -130,9 +219,9 @@ function ProjectArt({
   t: (text: CopyKey) => string;
 }) {
   return <div className={`kp-art kp-art-${id}`}>
-    <span className="kp-art-label">{t(id === 'pointsman' ? 'TASK → CONTRACT → CHECK' : id === 'voice' ? 'SPEECH / MUSIC / SIGNAL' : id === 'wind' ? 'HYPOTHESIS → EXPERIMENT' : 'CLAIM → SOURCE → REVIEW')}</span>
+    <span className="kp-art-label">{t(id === 'loadout' ? 'TOOLS → CONFIG → ENVIRONMENT' : id === 'pointsman' ? 'JEV → DAG → WORKERS' : id === 'voice' ? 'SPEECH / MUSIC / SIGNAL' : id === 'wind' ? 'HYPOTHESIS → EXPERIMENT' : id === 'microstructure' ? 'IMAGE → FEATURES → EVALUATION' : id === 'ibk' ? 'DATA → ANALYSIS → SERVICE' : id === 'soynet' ? 'ONNX → MAPPING → CONFIG' : 'CLAIM → SOURCE → REVIEW')}</span>
     <svg viewBox="0 0 440 170" fill="none" aria-hidden="true">
-      {id === 'pointsman' ? <>
+      {['loadout', 'pointsman', 'soynet'].includes(id) ? <>
         <path d="M72 85h75m48-40h72m-72 80h72M171 65v-8c0-8 6-12 14-12m-14 60v8c0 8 6 12 14 12m128-80h45v80h-45" stroke="currentColor" strokeWidth="1.5" />
         <rect x="30" y="60" width="55" height="50" rx="10" /><rect x="146" y="60" width="50" height="50" rx="10" />
         <rect x="265" y="25" width="50" height="40" rx="8" /><rect x="265" y="105" width="50" height="40" rx="8" /><circle cx="358" cy="85" r="20" />
@@ -170,7 +259,7 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    document.title = language === 'ko' ? 'Kai Lee | 백엔드 · AI 시스템' : 'Kai Lee | Backend & AI Systems';
+    document.title = 'Kai Lee | AI Systems Builder';
     document.documentElement.lang = language;
     const url = new URL(window.location.href);
     url.searchParams.set('lang', language);
@@ -192,7 +281,7 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
       <div className="kp-project-copy"><div className="kp-project-meta"><span>{t(project.category)}</span><span>{project.label}</span></div>
         <button type="button" className="kp-project-title" onClick={() => setSelectedId(project.id)}>{project.name}<Icon /></button>
         <p>{project.summary}</p><div className="kp-tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
-        <External href={project.url} className="kp-source-link">{project.linkLabel}</External>
+        {project.url && <External href={project.url} className="kp-source-link">{project.linkLabel}</External>}
       </div>
     </article>;
   }
@@ -210,11 +299,11 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
     </div>
     <div className="kp-layout">
       <aside className="kp-sidebar" aria-label={t('Profile')}>
-        <div className="kp-identity"><div className="kp-avatar" aria-hidden="true"><span>K</span><i /><b>LEE</b></div><div><h1>Kai Lee</h1><p className="kp-role">{t('Backend & AI Systems')}</p></div></div>
-        <p className="kp-profile-intro">{t('A software engineer who likes to understand the problem, build with AI, and check what actually changed.')}</p>
+        <div className="kp-identity"><div className="kp-avatar" aria-hidden="true"><span>K</span><i /><b>LEE</b></div><div><h1>Kai Lee</h1><p className="kp-role">AI Systems Builder</p></div></div>
+        <p className="kp-profile-intro">{t('I connect problems, agents and tools to build systems people can use. Always open to a conversation and a chance to build together.')}</p>
         <div className="kp-sidebar-rule" />
         <div className="kp-profile-lines"><div><span className="kp-icon-box"><Icon kind="code" /></span><p><small>{t('ENGINEERING')}</small>{t('Backend systems & QA')}</p></div><div><span className="kp-icon-box"><Icon kind="layers" /></span><p><small>{t('EXPLORATION')}</small>{t('Agents & applied ML')}</p></div><div><span className="kp-icon-box"><Icon kind="check" /></span><p><small>{t('WORKING STYLE')}</small>{t('AI-assisted. Human-reviewed.')}</p></div></div>
-        <div className="kp-sidebar-links"><External href="https://github.com/Kai-Leee"><Icon kind="github" /> GitHub</External><External href="https://github.com/Kai-Leee/competition-portfolio">{t('Case studies')}</External></div>
+        <div className="kp-sidebar-links"><External href="https://github.com/Kai-Leee"><Icon kind="github" /> GitHub</External><a href="mailto:dlrlxor548@gmail.com">dlrlxor548@gmail.com<Icon /></a><a href="tel:+13362106832">+1 336-210-6832<Icon /></a><External href="https://www.linkedin.com/in/taeklee00/">LinkedIn</External></div>
         <p className="kp-sidebar-caption">{t('IDEAS → EXPERIMENTS → EVIDENCE')}</p>
       </aside>
 
@@ -225,13 +314,14 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
 
         <section className="kp-panel" role="tabpanel" id="kp-panel-overview" aria-labelledby="kp-tab-overview" hidden={activeTab !== 'overview'} tabIndex={0}>
           <div className="kp-section-heading"><span className="kp-eyebrow">{t("A LITTLE ABOUT ME")}</span><span className="kp-edition">{t("Portfolio / 2026")}</span></div>
-          <div className="kp-hero"><h2>{t("I build systems,")}<br /><span>{t("then test the assumptions.")}</span></h2><p>{t("My work spans backend engineering, QA and AI competitions. I enter competitions to see how AI performs in practice and learn from other builders. Today I am exploring how models, tools and agents can work together, and how to make that setup easier to use. I want to connect that learning to real industry problems.")}</p><div className="kp-hero-actions"><button type="button" className="kp-primary" onClick={() => {
+          <div className="kp-hero"><h2>{t("From a question")}<br /><span>{t("to a system we can use.")}</span></h2><p>{t("My foundation is backend engineering and QA. Today I work with agents from problem definition through research, building and review. I am exploring how to connect the structure of the work with the tools and environments that make it happen—and how to make that easier for more people.")}</p><div className="kp-hero-actions"><button type="button" className="kp-primary" onClick={() => {
                 setActiveTab('work');
                 tabRefs.current[1]?.focus();
               }}>{t("Explore my work")} <Icon /></button><External href="https://github.com/Kai-Leee" className="kp-text-link">{t("View GitHub")}</External><button type="button" className="kp-text-link" onClick={() => {
                 setActiveTab('notes');
                 tabRefs.current[4]?.focus();
               }}>{t('Read my latest reflection')} <Icon /></button></div></div>
+          <div className="kp-about-grid"><section><h3>{t('What I bring')}</h3><p>{t('I ask questions until I understand the structure, turn assumptions into checks, and learn from the gap between expected and actual behavior.')}</p></section><section><h3>{t('What I am building')}</h3><p>{t('Agent workflows and developer tools that connect ideas, tasks, execution environments and human review.')}</p></section><section><h3>{t('What I care about')}</h3><p>{t('Useful tools that more people can try and shape together. I welcome conversations, feedback and opportunities to build with others.')}</p><a href="mailto:dlrlxor548@gmail.com" className="kp-text-link">{t('Say hello')} <Icon /></a></section></div>
           <div className="kp-at-a-glance" role="group" aria-label={t('Career at a glance')}>
             <button type="button" onClick={() => {
               setActiveTab('experience');
@@ -256,8 +346,9 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
 
         <section className="kp-panel" role="tabpanel" id="kp-panel-work" aria-labelledby="kp-tab-work" hidden={activeTab !== 'work'} tabIndex={0}>
           <span className="kp-eyebrow">{t("SELECTED PROJECTS & EXPERIMENTS")}</span><h2 className="kp-page-title">{t("Work")}<span className="kp-dot">.</span></h2><p className="kp-page-intro">{t("The problem, the decisions and the evidence behind the work. Open a project for my role and what I learned.")}</p>
-          <div className="kp-filters" role="group" aria-label={t('Filter projects')}>{(['All', 'Agents', 'Applied ML'] as const).map(item => <button type="button" aria-pressed={filter === item} onClick={() => setFilter(item)} key={item}>{t(item)}</button>)}</div>
+          <div className="kp-filters" role="group" aria-label={t('Filter projects')}>{(['All', 'Agents', 'Applied ML', 'Software'] as const).map(item => <button type="button" aria-pressed={filter === item} onClick={() => setFilter(item)} key={item}>{t(item)}</button>)}</div>
           <div className="kp-work-grid" aria-live="polite">{projects.filter(project => filter === 'All' || project.category === filter).map(project => projectCard(project))}</div>
+          <details className="kp-exploration-archive"><summary>{t('More from my workbench')}</summary><p className="kp-page-intro">{t('A wider notebook of prototypes, local changes, coursework and research. These are at different stages; they are not all released products.')}</p><div className="kp-explorations">{explorations.map(item => <article key={item.name}><h3>{item.url ? <External href={item.url}>{item.name}</External> : item.name}</h3><p>{t(item.summary)}</p></article>)}</div></details>
         </section>
 
         <section className="kp-panel" role="tabpanel" id="kp-panel-experience" aria-labelledby="kp-tab-experience" hidden={activeTab !== 'experience'} tabIndex={0}>
@@ -296,19 +387,19 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
               topic: t('AGENT ENGINEERING'),
               title: t('A valid response can still be wrong.'),
               text: t('Why source checking and semantic review need their own place in an agent workflow.'),
-              url: projects[2].url
+              url: projects.find(project => project.id === 'disclosure')!.url
             }, {
               number: '02',
               topic: t('EXPERIMENT DESIGN'),
               title: t('An improvement needs a boundary.'),
               text: t('A better file-level result and a worse music diagnostic can both be true. Matching inputs matters.'),
-              url: projects[1].url
+              url: projects.find(project => project.id === 'voice')!.url
             }, {
               number: '03',
               topic: t('WORKING WITH AI'),
               title: t('Make the work inspectable.'),
               text: t('Task contracts, scoped artifacts and checks that point to the actual result.'),
-              url: projects[0].url
+              url: projects.find(project => project.id === 'pointsman')!.url
             }].map(note => <article className="kp-note-row" key={note.number}><span className="kp-note-number">{note.number}</span><div><p className="kp-eyebrow">{note.topic}</p><h3><a href={note.url} target="_blank" rel="noopener noreferrer">{note.title}<Icon /></a></h3><p>{note.text}</p></div></article>)}</div>
           <External href="https://github.com/Kai-Leee/competition-portfolio" className="kp-primary">{t("Browse the case-study archive")} <Icon kind="github" /></External>
         </section>
@@ -320,7 +411,7 @@ export const KaiLeeVCardEngineeringPortfolio = () => {
     <dialog ref={dialog} className="kp-dialog" aria-labelledby="kp-detail-title" onClose={() => setSelectedId(null)} onClick={event => {
       if (event.target === event.currentTarget) event.currentTarget.close();
     }}>
-      {selected && <div className="kp-dialog-content"><button type="button" className="kp-dialog-close" aria-label={t("Close project details")} onClick={() => dialog.current?.close()}><Icon kind="close" size={22} /></button><p className="kp-eyebrow">{selected.name} / {t(selected.category)}</p><h2 id="kp-detail-title">{selected.title}</h2><p className="kp-dialog-label">{selected.label}</p><div className="kp-detail-section"><h3>{t("The problem")}</h3><p>{selected.problem}</p></div><div className="kp-detail-section"><h3>{t("My decision")}</h3><p>{selected.decision}</p></div><div className="kp-detail-section"><h3>{t("What the evidence says")}</h3><p>{selected.result}</p></div><div className="kp-detail-section"><h3>{t("My role & AI assistance")}</h3><p>{selected.role}</p></div><External href={selected.url} className="kp-primary">{selected.linkLabel}</External></div>}
+      {selected && <div className="kp-dialog-content"><button type="button" className="kp-dialog-close" aria-label={t("Close project details")} onClick={() => dialog.current?.close()}><Icon kind="close" size={22} /></button><p className="kp-eyebrow">{selected.name} / {t(selected.category)}</p><h2 id="kp-detail-title">{selected.title}</h2><p className="kp-dialog-label">{selected.label}</p><div className="kp-detail-section"><h3>{t("The problem")}</h3><p>{selected.problem}</p></div><div className="kp-detail-section"><h3>{t("My decision")}</h3><p>{selected.decision}</p></div><div className="kp-detail-section"><h3>{t("What the evidence says")}</h3><p>{selected.result}</p></div><div className="kp-detail-section"><h3>{t("My role")}</h3><p>{selected.role}</p></div>{selected.url && <External href={selected.url} className="kp-primary">{selected.linkLabel}</External>}</div>}
     </dialog>
   </div>;
 };

@@ -1,6 +1,6 @@
-# Kai Lee — Engineering Portfolio
+# Kai Lee — AI Systems Builder
 
-Backend engineering, QA, agent workflows and applied machine-learning case studies.
+Agent workflows and developer tools, grounded in backend engineering, QA and applied machine-learning experiments.
 
 - [Portfolio](https://kai-leee.github.io/engineering-portfolio/)
 - [English](https://kai-leee.github.io/engineering-portfolio/?lang=en) · [한국어](https://kai-leee.github.io/engineering-portfolio/?lang=ko)
@@ -8,9 +8,9 @@ Backend engineering, QA, agent workflows and applied machine-learning case studi
 
 ## Contents
 
-The portfolio covers selected projects, Timepercent backend/QA experience, education, research, military service, community leadership and personal reflections. Project pages distinguish personal decisions, AI assistance, evaluation evidence and unresolved limitations.
+The portfolio covers Agent Loadout, Pointsman (Jev + dependency DAG routing), audio detection, financial disclosure review, wind forecasting, microstructure prediction, IBK Securities, SoyNet and vessel matching. A separate expandable workbench holds prototypes, local changes, coursework and research at their recorded stages. Experience and Background cover Timepercent, education, UNCG research, military service and community leadership.
 
-Choose Amber, Ocean or Paper and switch between English and Korean in the sidebar. Language is encoded in the URL; theme resets when the page is reopened.
+Use the color-only Amber, Ocean and Paper buttons and the direct English / 한국어 buttons at the top right. Language is encoded in the URL; theme resets when the page is reopened. Contact links open GitHub, Gmail, telephone and LinkedIn directly.
 
 ## Build and host
 
